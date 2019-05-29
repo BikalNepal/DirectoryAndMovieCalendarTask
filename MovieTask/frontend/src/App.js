@@ -50,7 +50,7 @@ class App extends Component {
             ? array[index + 1].Auditorium.AuditoriumName ===
                 movie.Auditorium.AuditoriumName && areSameDay
               ? this.formatDate(array[index + 1].ShowDateTime)
-              : moment(formattedStartTime).add(3, "hours")._d
+              : moment(formattedStartTime).add(3, "hours")._d //prevented end time to be set as next day's movie's start time
             : moment(formattedStartTime).add(3, "hours")._d; //as last movie's [index+1] doesn't exist-> added approx time for a full movie!
           movie.start = formattedStartTime;
           movie.end = formattedEndTime;
