@@ -19,4 +19,4 @@ For Movies Calendar:
 9) go to `localhost:3000/shows` from your browser to view the movies calendar; `react-big-calendar` is used for this purpose.
 Thank you for your time!
 
-#P.S.: The provided `api` only had start time of the movie and no duration or end time and the `react-big-calendar` requires an `end time` for the `event` as well. So, I had to make some approximations (movie duration as 3 hrs) when the `end time` of a movie couldn’t be set as `start time` of the next movie.
+#### P.S.: The provided `api` only had start time of the movie and no duration or end time and the `react-big-calendar` requires an `end time` for the `event` as well. So, I had to make some approximations (movie duration as 3 hrs) when the `end time` of a movie couldn’t be set as `start time` of the next movie.
