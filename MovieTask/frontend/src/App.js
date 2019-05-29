@@ -60,7 +60,6 @@ class App extends Component {
           movie.allDay = false;
           return movie;
         });
-        console.log("SORTED", groupedMoviesList);
 
         this.setState({
           cal_events: sortedMoviesList
