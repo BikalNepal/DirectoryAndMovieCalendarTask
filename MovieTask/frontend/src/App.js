@@ -32,25 +32,35 @@ class App extends Component {
       .then(response => {
         let movies = response.data.shows;
 
-        //sorted movie list for calculation of end time of a movie
-        let sortedMoviesList = _.sortBy(movies, [
-          "Auditorium.AuditoriumName",
-          "ShowDateTime"
+        //sorted and grouped movie list for calculation of end time of a movie
+        let sortedMoviesList = _.sortBy(movies, ["ShowDateTime"]);
+        let groupedMoviesList = _.orderBy(sortedMoviesList, [
+          "Auditorium.AuditoriumName"
         ]);
-
-        sortedMoviesList.forEach((movie, index, array) => {
+        groupedMoviesList.forEach((movie, index, array) => {
           let formattedStartTime = this.formatDate(movie.ShowDateTime);
-          let formatedEndTime = array[index + 1]
-            ? this.formatDate(array[index + 1].ShowDateTime)
-            : moment(formattedStartTime).add(2.5, "hours")._d; //as last movie's [index+1] doesn't exist-> added approx time for a full movie!
+          //since the api doesn't provide a duration or an end time, had to calculate and approx end time in this way for calendar
+          let areSameDay = array[index + 1]
+            ? moment(movie.ShowDateTime).day() ===
+              moment(array[index + 1].ShowDateTime).day()
+              ? true
+              : false
+            : false;
+          let formattedEndTime = array[index + 1]
+            ? array[index + 1].Auditorium.AuditoriumName ===
+                movie.Auditorium.AuditoriumName && areSameDay
+              ? this.formatDate(array[index + 1].ShowDateTime)
+              : moment(formattedStartTime).add(3, "hours")._d
+            : moment(formattedStartTime).add(3, "hours")._d; //as last movie's [index+1] doesn't exist-> added approx time for a full movie!
           movie.start = formattedStartTime;
-          movie.end = formatedEndTime;
+          movie.end = formattedEndTime;
           movie.title = `${movie.Movie.MovieName} (${
             movie.Auditorium.AuditoriumName
           })`;
           movie.allDay = false;
           return movie;
         });
+        console.log("SORTED", groupedMoviesList);
 
         this.setState({
           cal_events: sortedMoviesList
